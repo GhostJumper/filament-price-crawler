@@ -1,10 +1,11 @@
-class Page:
-    def __init__(self, url: str, price_selector: str, get_name, get_price):
+from src.pages.page_config import PageConfig
 
-        self.url = url
-        self.price_selector = price_selector
-        self.getname = get_name
-        self.getprice = get_price
+class Page:
+    def __init__(self, page_config: PageConfig):
+        self.url = page_config.url
+        self.selector = page_config.selector
+        self.getname = page_config.get_name
+        self.getprice = page_config.get_price
 
     def get_prices(self) -> list:
         from helium import start_chrome, find_all, kill_browser, S
@@ -13,7 +14,7 @@ class Page:
         browser = start_chrome(self.url, headless=True)
         prices = []
         try:
-            price_elements = find_all(S(self.price_selector))
+            price_elements = find_all(S(self.selector))
             if price_elements:
                 for element in price_elements:
                     text = element.web_element.text
